@@ -1,183 +1,117 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>网络控制工具</title>
   <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="background-shapes">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
-  </div>
-  <div class="container">
+  <div class="app-container">
     <header>
-      <h1>网络控制工具</h1>
-      <p>快速管理您的网络连接</p>
+      <div>
+        <h1 class="title">网络控制工具</h1>
+        <p class="subtitle">快速管理您的网络连接</p>
+      </div>
+      <div class="header-controls">
+        <button id="theme-toggle-btn" class="button theme-button" aria-label="切换主题">
+          <svg id="theme-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path class="sun-icon" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            <path class="moon-icon hidden" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+          </svg>
+          <span class="sr-only">切换主题</span>
+        </button>
+        <button id="minimize-btn" class="button icon-button" aria-label="最小化到系统托盘">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14l-7 7-7-7"/>
+          </svg>
+          <span class="sr-only">最小化</span>
+        </button>
+      </div>
     </header>
 
     <main>
-      <section class="card" id="network-control">
-        <h2>网络控制</h2>
-        <div class="network-status">
-          <div class="status-indicator">
-            <div class="status-dot" id="network-status-dot"></div>
-            <span class="status-text" id="network-status-text">正在检测网络状态...</span>
+      <div class="main-content">
+        <section class="card network-card fade-in">
+          <div class="network-status">
+            <div id="network-status-dot" class="status-dot"></div>
+            <span id="network-status-text" class="status-text">正在检测网络状态...</span>
           </div>
-          <div class="network-actions">
-            <button class="action-button primary" id="toggle-network-btn">断开网络</button>
+          
+          <div class="button-group">
+            <button id="toggle-network-btn" class="button button-danger" aria-label="断开网络连接">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+              <span>断开网络</span>
+            </button>
+            <button id="repair-btn" class="button button-success" aria-label="修复网络问题">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+              </svg>
+              <span>网络修复</span>
+            </button>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="card" id="quick-actions">
-        <h2>快捷操作</h2>
-        <div class="tools-grid">
-          <button class="tool-button network-toggle" id="network-toggle-btn">一键断网</button>
-          <button class="tool-button" id="minimize-btn">隐藏窗口</button>
-          <button class="tool-button" id="settings-btn">设置</button>
-          <button class="tool-button repair-button" id="repair-btn">网络修复</button>
-          <button class="tool-button hide-app-button" id="hide-app-btn">隐藏当前应用</button>
-          <button class="tool-button" id="show-hidden-apps-btn">隐藏应用列表</button>
-        </div>
-      </section>
-      
-      <!-- 隐藏的应用列表界面 - 默认隐藏 -->
-      <section class="card hidden" id="hidden-apps-section">
-        <h2>隐藏的应用列表</h2>
-        <div class="hidden-apps-description">
-          <p>以下是当前被隐藏的应用程序，点击恢复按钮可以恢复应用：</p>
-        </div>
-        
-        <!-- 隐藏应用列表 -->
-        <div class="hidden-apps-list" id="hidden-apps-list">
-          <!-- 由JavaScript动态生成 -->
-          <div class="no-hidden-apps" id="no-hidden-apps">当前没有隐藏的应用程序</div>
-        </div>
-        
-        <!-- 操作按钮 -->
-        <div class="hidden-apps-actions">
-          <button class="action-button" id="refresh-hidden-apps-btn">刷新列表</button>
-          <button class="action-button" id="close-hidden-apps-btn">关闭</button>
-        </div>
-      </section>
-      
-      <!-- 网络修复工具界面 - 默认隐藏 -->
-      <section class="card hidden" id="network-repair-section">
-        <h2>网络修复工具</h2>
-        <div class="repair-description">
-          <p>选择适合您当前网络问题的修复方案：</p>
-        </div>
-        
-        <!-- 修复选项 -->
-        <div class="repair-options">
-          <div class="repair-option">
-            <h3>基本修复</h3>
-            <p>重启网络接口，解决常见的连接问题</p>
-            <button class="repair-button" id="basic-repair-btn">执行基本修复</button>
+        <section id="network-repair-section" class="card repair-section-card hidden fade-in">
+          <div class="card-header">
+            <h2>网络修复工具</h2>
+            <button id="close-repair-btn" class="button icon-button" aria-label="关闭修复面板">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          <div class="repair-option">
-            <h3>DNS修复</h3>
-            <p>刷新DNS缓存，解决域名解析问题</p>
-            <button class="repair-button" id="dns-repair-btn">执行DNS修复</button>
-          </div>
-          <div class="repair-option">
-            <h3>IP修复</h3>
-            <p>释放并更新IP地址，解决IP冲突或配置问题</p>
-            <button class="repair-button" id="ip-repair-btn">执行IP修复</button>
-          </div>
-          <div class="repair-option">
-            <h3>高级修复</h3>
-            <p>执行全面的网络修复，包括重置网络堆栈和接口</p>
-            <button class="repair-button danger" id="advanced-repair-btn">执行高级修复</button>
-          </div>
-        </div>
-        
-        <!-- 修复状态 - 默认隐藏 -->
-        <div class="repair-status hidden" id="repair-status">
-          <div class="status-spinner"></div>
-          <div class="status-message" id="repair-status-message"></div>
-        </div>
-        
-        <!-- 修复结果 - 默认隐藏 -->
-        <div class="repair-result hidden" id="repair-result">
-          <h3>修复结果</h3>
-          <div class="result-message" id="repair-result-message"></div>
-        </div>
-        
-        <!-- 诊断结果 - 默认隐藏 -->
-        <div class="diagnostics-section hidden" id="diagnostics-section">
-          <h3>网络诊断</h3>
-          <div class="diagnostics-content" id="diagnostics-content">
-            <pre id="diagnostics-output"></pre>
-          </div>
-        </div>
-        
-        <!-- 操作按钮 -->
-        <div class="repair-actions">
-          <button class="action-button" id="run-diagnostics-btn">运行网络诊断</button>
-          <button class="action-button" id="close-repair-btn">关闭</button>
-        </div>
-      </section>
-      
-      <section class="card hidden" id="settings-section">
-        <h2>快捷键设置</h2>
-        <div class="settings-form">
-          <div class="setting-item">
-            <label for="hide-window-shortcut">隐藏窗口快捷键:</label>
-            <div class="shortcut-input-container">
-              <input type="text" id="hide-window-shortcut" placeholder="点击设置" readonly>
-              <button id="clear-hide-shortcut" class="clear-btn">清除</button>
+
+          <div class="repair-section">
+            <div class="repair-card" id="basic-repair-btn" tabindex="0">
+              <h3 class="repair-title">基本修复</h3>
+              <p class="repair-description">执行基本的网络重置和刷新操作</p>
+            </div>
+            <div class="repair-card" id="dns-repair-btn" tabindex="0">
+              <h3 class="repair-title">DNS修复</h3>
+              <p class="repair-description">刷新DNS缓存并重置DNS设置</p>
+            </div>
+            <div class="repair-card" id="ip-repair-btn" tabindex="0">
+              <h3 class="repair-title">IP修复</h3>
+              <p class="repair-description">更新IP地址并重置网络配置</p>
+            </div>
+            <div class="repair-card" id="advanced-repair-btn" tabindex="0">
+              <h3 class="repair-title">高级修复</h3>
+              <p class="repair-description">执行全面的网络系统修复</p>
             </div>
           </div>
-          <div class="setting-item">
-            <label for="show-window-shortcut">显示窗口快捷键:</label>
-            <div class="shortcut-input-container">
-              <input type="text" id="show-window-shortcut" placeholder="点击设置" readonly>
-              <button id="clear-show-shortcut" class="clear-btn">重置</button>
+
+          <div class="button-group">
+            <button id="run-diagnostics-btn" class="button button-primary" aria-label="运行网络诊断">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+                <path d="M12 8v4l3 3" />
+              </svg>
+              <span>运行诊断</span>
+            </button>
+          </div>
+
+          <div id="repair-status" class="diagnostics-section hidden">
+            <div class="status-indicator">
+              <div class="loading-spinner"></div>
+              <p id="repair-status-message"></p>
             </div>
           </div>
-          <div class="setting-item">
-            <label for="toggle-network-shortcut">断网快捷键:</label>
-            <div class="shortcut-input-container">
-              <input type="text" id="toggle-network-shortcut" placeholder="点击设置" readonly>
-              <button id="clear-network-shortcut" class="clear-btn">清除</button>
-            </div>
+
+          <div id="repair-result" class="diagnostics-section hidden">
+            <p id="repair-result-message"></p>
           </div>
-          <div class="setting-item">
-            <label for="hide-app-shortcut">隐藏应用快捷键:</label>
-            <div class="shortcut-input-container">
-              <input type="text" id="hide-app-shortcut" placeholder="点击设置" readonly>
-              <button id="clear-hide-app-shortcut" class="clear-btn">清除</button>
-            </div>
+
+          <div id="diagnostics-section" class="diagnostics-section hidden">
+            <pre id="diagnostics-output" class="diagnostics-output"></pre>
           </div>
-          <div class="setting-item checkbox-setting">
-            <label class="checkbox-label">
-              <input type="checkbox" id="auto-hide-startup">
-              <span>启动时自动隐藏窗口</span>
-            </label>
-          </div>
-          <div class="setting-item checkbox-setting">
-            <label class="checkbox-label">
-              <input type="checkbox" id="start-with-system">
-              <span>开机自动启动</span>
-            </label>
-          </div>
-          <div class="setting-actions">
-            <button id="save-settings" class="action-button primary">保存设置</button>
-            <button id="cancel-settings" class="action-button">取消</button>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
-
-    <footer>
-      <p>网络控制工具 v1.1.0 - 支持 macOS, Windows 和 Linux</p>
-    </footer>
   </div>
-
   <script src="index.js"></script>
 </body>
 </html>

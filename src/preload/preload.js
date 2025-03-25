@@ -26,23 +26,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // 设置保存和加载API
   saveSettings: (settings) => ipcRenderer.invoke('save-settings', settings),
   loadSettings: () => ipcRenderer.invoke('load-settings'),
-  
-  // 应用隐藏和恢复API
-  hideCurrentApp: () => ipcRenderer.invoke('hide-current-app'),
-  getHiddenApps: () => ipcRenderer.invoke('get-hidden-apps'),
-  restoreHiddenApp: (appId) => ipcRenderer.invoke('restore-hidden-app', appId),
 });
 
 // 添加IPC事件监听
 ipcRenderer.on('show-network-repair', () => {
   // 当从托盘菜单点击"网络修复"时，显示网络修复界面
   document.dispatchEvent(new CustomEvent('show-network-repair'));
-});
-
-// 监听应用程序隐藏结果
-ipcRenderer.on('hide-app-result', (event, result) => {
-  // 将结果传递给渲染进程
-  document.dispatchEvent(new CustomEvent('hide-app-result', { detail: result }));
 });
 
 // 可以在这里添加其他预加载逻辑
