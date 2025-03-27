@@ -70,30 +70,35 @@ pnpm build:win
 ## 项目结构
 
 ```
-Computer Helper/
-├── src/
-│   ├── assets/      # 图标和资源文件
+.
+├── .gitignore         # Git 忽略文件配置
+├── index.html         # 主 HTML 文件 (可能是旧的或占位符)
+├── index.js           # 主 JavaScript 文件 (可能是旧的或占位符)
+├── LICENSE            # 项目许可证文件
+├── package.json       # 项目依赖和脚本配置
+├── pnpm-lock.yaml     # pnpm 依赖锁定文件
+├── README.md          # 项目说明文档 (当前文件)
+├── styles.css         # 主 CSS 文件 (可能是旧的或占位符)
+├── src/               # 源代码目录
+│   ├── assets/        # 图标和静态资源
 │   │   ├── icon.png
 │   │   ├── icon.svg
 │   │   ├── tray-icon.png
 │   │   └── tray-icon.svg
-│   ├── main/        # 主进程代码
-│   │   └── main.js
-│   ├── preload/     # 预加载脚本（安全地暴露API）
-│   │   └── preload.js
-│   ├── renderer/    # 渲染进程代码（前端UI）
-│   │   ├── index.html
-│   │   ├── index.js
-│   │   └── styles.css
-│   └── scripts/     # 系统脚本
+│   ├── main/          # Electron 主进程代码
+│   │   └── main.js      # 主进程入口文件
+│   ├── preload/       # Electron 预加载脚本
+│   │   └── preload.js   # 用于主进程和渲染进程通信
+│   ├── renderer/      # Electron 渲染进程代码 (Web 页面)
+│   │   ├── index.html   # 渲染进程 HTML 页面
+│   │   ├── index.js     # 渲染进程 JavaScript
+│   │   └── styles.css   # 渲染进程 CSS 样式
+│   └── scripts/       # 辅助脚本 (如 AppleScript, Shell)
 │       ├── hide_app.scpt
 │       ├── restore_app.scpt
 │       ├── restore_network.scpt
 │       ├── restore_network.sh
 │       └── wifi_on.sh
-├── package.json     # 项目配置
-├── pnpm-lock.yaml   # 依赖锁定文件
-└── README.md        # 项目说明
 ```
 
 ## 技术栈
