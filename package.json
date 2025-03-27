@@ -1,6 +1,6 @@
 {
   "name": "computer-helper",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "一个跨平台的Computer Helper应用",
   "main": "src/main/main.js",
   "scripts": {
